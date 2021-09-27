@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        var div = document.querySelector('#app');
+        var viewModel = {};
+
+        // Object.defineProperty('대상 객체', '객체의 속성', {
+        //     // 정의할 내용
+        // }); // 객체의 동작을 재정의하는 API 
+        
+        // Object.defineProperty(viewModel, 'str', {
+        //     // get은 속성에 접근했을 때의 동작을 정의
+        //     get: function() {
+        //         console.log('접근'); //viewModel.str 에 접근하면 '접근' 이라고 찍힘
+        //     },
+        //     // set은 속성에 값을 할당했을 때의 동작을 정의
+        //     set: function(newValue) {
+        //         console.log('할당', newValue); //viewModel.str = ? 처럼 할당하면 '할당' 이라고 찍힘
+        //         div.innerHTML = newValue; // viewModel.str에 값을 변경할 때 마다 화면에 값을 계속 뿌려줌
+        //     }
+        // });
+
+        /* 
+        값을 바꿀 때 마다 화면이 계속 변하는게 Vue의 핵심이며 반응성이라고 함,
+        데이터의 변화를 라이브러리에서 감지해서 알아서 화면에 자동으로 그려주는것이 reactivity라고 보면 됨 (데이터바인딩)
+        */
+        
+        (function() {
+            function init() {
+                Object.defineProperty(viewModel, 'str', {
+                    // get은 속성에 접근했을 때의 동작을 정의
+                    get: function() {
+                        console.log('접근'); //viewModel.str 에 접근하면 '접근' 이라고 찍힘
+                    },
+                    // set은 속성에 값을 할당했을 때의 동작을 정의
+                    set: function(newValue) {
+                        console.log('할당', newValue); //viewModel.str = ? 처럼 할당하면 '할당' 이라고 찍힘
+                        render(newValue);
+                    }
+                });
+            }
+
+            function render(value) {
+                div.innerHTML = value;
+            }
+
+            init();
+        })(); //즉시 실행 함수 표현 (IIFE) -> 정의 되자마자 즉시 실행되는 JS 함수를 의미
+
+        
+    </script>
+</body>
+</html>

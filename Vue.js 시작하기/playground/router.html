@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <router-link to="/login">Login</router-link> <!-- router-link는 기본적으로 a태그로 변환되어 나타남 -->
+            <router-link to="/main">Main</router-link>
+        </div>
+        <router-view></router-view> <!-- app안에 router 속성이 있어야 사용 가능한 태그 -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@2.0.0/dist/vue-router.js"></script>
+    <script>
+
+        var LoginComponent = {
+            template: '<div>login</div>'
+        }
+
+        var MainComponent = {
+            template: '<div>Main<div>'
+        }
+
+        var Router = new VueRouter({
+            // 페이지의 라우팅 정보 routes
+            mode: 'history', // 해시태그 제거
+            routes: [
+                // 로그인 페이지 정보
+                {
+                    // 페이지의 url 이름 path
+                    path: '/login',
+                    // 해당 url에서 표시될 컴포넌트 component
+                    component: LoginComponent
+                },
+                // 메인 페이지 정보
+                {
+                    path: '/main',
+                    component: MainComponent
+                }
+            ]
+        });
+
+        new Vue({
+            el: '#app',
+            router: Router // 15 router가 아닌 Vue안에 포함 돼 있는 rotuer 속성 : 우리가 정의한 router
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- <app-header v-on:하위 컴포넌트에서 발생한 이벤트 이름="상위 컴포넌트의 메서드 이름"></app-header> -->
+        <app-header v-on:pass="logText"></app-header>
+        {{ num }}
+        <app-content v-on:increase="increaseNumber"></app-content> <!-- increase가 발생 했을 때 increaseNumber 메서드 발생 -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var appHeader = {
+            template: '<button v-on:click="passEvent">Click me</button>',
+            methods: {
+                passEvent: function() {
+                    this.$emit('pass'); // Vue 개발자 옵션에서 확인 가능
+
+                }
+            }
+        }
+
+        var appContent = {
+            template: '<button v-on:click="addNumber">add</button>', // click 할 때 addNumber라는 메서드 호출
+            methods: {
+                addNumber: function() { // addNumber라는 메서드
+                    this.$emit('increase'); // increase라는 이벤트 발생
+                }
+            }
+        }
+        
+        new Vue({
+            el: '#app',
+            components: {
+                'app-header': appHeader,
+                'app-content': appContent
+            },
+            methods: {
+                logText: function() {
+                    console.log("hi");
+                },
+                increaseNumber: function() {
+                    this.num += 1; // this.num 은 Vue 즉 root에 있는 data 속성 안에 num this는 객체 자체를 가르킨다.
+                }
+            },
+            data: {
+                num: 10
+            }
+        });
+    </script>
+</body>
+</html>
