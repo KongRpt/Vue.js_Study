@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{ str }}
+        <p v-bind:id="uuid" v-bind:class="name">{{ num }}</p> <!-- bind할건데 인스턴스 안에있는 uuid와 연동 하겠다. *굳이 Uuid라고 안 하고 다른 id로 만들어도 된다. -->
+        <!-- <p id="abc1234">{{ num }}</p> 실제 화면에선 이렇게 보인다 -->
+        <p>{{ doubleNum }}</p>
+        <p>{{ hi }}</p>
+
+        <div v-if="loading">
+            Loading...
+        </div>
+        <div v-else>
+            test user has been logged in
+        </div>
+        <div v-show="loading">
+            Loading...
+        </div> <!-- v-if는 DOM에서 아예 제거, v-show는 DOM에서 display: none으로 아예 제거가 아님 -->
+
+        <!-- TODO: 인풋 박스를 만들고 입력된 값을 p 태그에 출력해보세요 -->
+        <input type="text" v-model="message"> <!-- v-model은 해당하는 인스턴스의 data속성 안에 있는 속성들 중 모델 명이 일치한 속성과 연결 시켜준다. -->
+        <p> {{ message }}</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                str: 'c5ng',
+                num: 15,
+                //doubleNum: 10 * 2 // 이렇게 선언해도 됨 하지만 이미 있는 상수가 있으니 computed를 사용하여 표현해주는게 중복 x
+                uuid: "abc1234",
+                name: "text-blue",
+                loading: true,
+                message: "",
+            },
+            computed: {
+                doubleNum: function() {
+                    return this.num * 2;
+                },
+                hi: function() {
+                    return "hi"
+                }
+            }
+        })
+    </script>
+</body>
+</html>
