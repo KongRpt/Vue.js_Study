@@ -2,7 +2,7 @@
   <div>
     <!-- <transition-group name="list" tag="ul"> -->
       <ul>
-        <li v-for="(todoItem, index) in propsdata" :key="todoItem.item" class="shadow">
+        <li v-for="(todoItem, index) in this.$store.state.todoItems" v-bind:key="todoItem.item" class="shadow"> <!-- propsdata 대신 store -->
           <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" 
               v-on:click="toggleComplete(todoItem, index)"></i>
           <span v-bind:class="{textCompleted: todoItem.completed}">{{ todoItem.item }}</span> 
@@ -18,13 +18,13 @@
 
 <script>
 export default {
-  props: ['propsdata'],
   methods: {
-    removeTodo: function(todoItem, index) {
-      this.$emit('removeItem', todoItem, index);
+    removeTodo(todoItem, index) {
+      this.$store.commit('removeOneItem', {todoItem, index}) // todoItem과 index를 따로 보내면 안 되고 객체화 시켜서 하나의 인자에 담아 보내야 함 (mutations의 특징은 인자를 하나만 받는다.)
+      // store.js에 있는 mutaions를 동작시키기 위해 보냄
     },
-    toggleComplete: function(todoItem, index) {
-      this.$emit('toggleItem', todoItem, index)
+    toggleComplete(todoItem, index) {
+      this.$store.commit('toggleOneItem', {todoItem, index})
     }
   }
 }

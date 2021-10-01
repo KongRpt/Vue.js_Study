@@ -1,6 +1,7 @@
 <template>
   <header>
-    <h1>TODO it!</h1>
+    <!-- <h1>TODO it!</h1> -->
+    <h1>{{ this.$store.state.headerText }}</h1> <!-- store.js에서 state 값 사용 하는 법 (data와 유사) -->
   </header>
 </template>
 
