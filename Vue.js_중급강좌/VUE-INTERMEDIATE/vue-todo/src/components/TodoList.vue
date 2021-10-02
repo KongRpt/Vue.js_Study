@@ -2,12 +2,12 @@
   <div>
     <!-- <transition-group name="list" tag="ul"> -->
       <ul>
-        <li v-for="(todoItem, index) in this.$store.state.todoItems" v-bind:key="todoItem.item" class="shadow"> <!-- propsdata 대신 store -->
+        <li v-for="(todoItem, index) in this.storedTodoItems" v-bind:key="todoItem.item" class="shadow"> <!-- propsdata 대신 store -->
           <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" 
-              v-on:click="toggleComplete(todoItem, index)"></i>
+              v-on:click="toggleComplete({todoItem, index})"></i>
           <span v-bind:class="{textCompleted: todoItem.completed}">{{ todoItem.item }}</span> 
           <!-- todoItem.completed의 속성에 따라 (기본 값이 false로 선언) v-bind로 클래스를 선언 할지 안 할지 정할 수 있음 -->
-          <span class="removeBtn" v-on:click="removeTodo(todoItem, index)">
+          <span class="removeBtn" v-on:click="removeTodo({todoItem, index})">
             <i class="fas fa-trash-alt"></i>
           </span>
         </li> <!-- v-for사용하면 무조건 v-bind:key로 key 이름을 설정해줘야 함 -->
@@ -17,15 +17,29 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
+
 export default {
   methods: {
-    removeTodo(todoItem, index) {
-      this.$store.commit('removeOneItem', {todoItem, index}) // todoItem과 index를 따로 보내면 안 되고 객체화 시켜서 하나의 인자에 담아 보내야 함 (mutations의 특징은 인자를 하나만 받는다.)
-      // store.js에 있는 mutaions를 동작시키기 위해 보냄
-    },
-    toggleComplete(todoItem, index) {
-      this.$store.commit('toggleOneItem', {todoItem, index})
-    }
+    ...mapMutations({
+      removeTodo: 'removeOneItem', // 메서드 명 : 커밋 명 (Helper함수들은 인자를 선언 안 해도 넘겨지고 있음)
+      toggleComplete: 'toggleOneItem'
+    }),
+    // removeTodo(todoItem, index) {
+    //   this.$store.commit('removeOneItem', {todoItem, index}) // todoItem과 index를 따로 보내면 안 되고 객체화 시켜서 하나의 인자에 담아 보내야 함 (mutations의 특징은 인자를 하나만 받는다.)
+    //   // store.js에 있는 mutaions를 동작시키기 위해 보냄
+    // }, mapMutations의 25번 줄 removeTodo 는 27번 줄 removeTodo와 같음
+
+    // toggleComplete(todoItem, index) {
+    //   this.$store.commit('toggleOneItem', {todoItem, index})
+    // } 26번 줄 toggleComplete는 33번 줄 toggleComplete와 동일
+  
+  },
+  computed: {
+    ...mapGetters(['storedTodoItems']) // 배열 리터럴 배열은 매핑한것과 변수명이 같을 때
+    // ...mapGetters({
+    //   todoItems: 'storedTodoItems'
+    // }) // 객체 리터럴 객체는 매핑한것과 변수명이 다를 때
   }
 }
 </script>
